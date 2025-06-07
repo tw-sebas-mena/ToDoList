@@ -8,6 +8,7 @@ export function useAuth() {
 
 export function AuthProvider({children}) {
     const [token, setToken] = useState(localStorage.getItem('jwtToken'));
+    const [userId, setUserId] = useState(0);
     const isAuthenticated = useMemo(() => !!token, [token]);
 
     useEffect(() => {
@@ -37,6 +38,7 @@ export function AuthProvider({children}) {
             const data = await response.json();
             if(data.accessToken) {
                 setToken(data.accessToken);
+                setUserId(data.loggedInUserId);
                 return true;
             } else {
                 throw new Error("No token received from the server");
@@ -77,6 +79,7 @@ export function AuthProvider({children}) {
 
     const value = {
         token,
+        userId,
         isAuthenticated,
         login,
         register,

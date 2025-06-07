@@ -31,6 +31,10 @@ public class ToDoItemService {
         return toDoItemRepository.save(existing);
     }
 
+    public Iterable<ToDoItem> findAllByUserId(int userId) {
+        return toDoItemRepository.findByUserId(userId);
+    }
+
     public void delete(int id) {
         toDoItemRepository.deleteById((long) id);
     }

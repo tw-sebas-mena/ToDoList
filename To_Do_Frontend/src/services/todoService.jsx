@@ -28,10 +28,10 @@ const handleError = (error) => {
     }
 };
 
-export const fetchItemsAPI = async (token) => {
+export const fetchItemsAPI = async (itemId, token) => {
     try {
         const apiClient = getApiClient(token);
-        const result = await apiClient.get('');
+        const result = await apiClient.get(`/${itemId}`);
         return result.data;
     } catch (error) {
         handleError(error)
@@ -41,7 +41,7 @@ export const fetchItemsAPI = async (token) => {
 export const addItemsAPI = async (itemData, token) => {
     try {
         const apiClient = getApiClient(token);
-        const result = await apiClient.post('/', itemData);
+        const result = await apiClient.post('', itemData);
         return result.data;
     } catch (error) {
         handleError(error)

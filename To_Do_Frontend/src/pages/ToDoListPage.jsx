@@ -1,4 +1,4 @@
-import React, {useReducer, useState, useCallback, useEffect, useMemo} from 'react'
+import React, {useReducer, useCallback, useEffect, useMemo} from 'react'
 import {toDoItemsReducer, initialState} from '../reducers/toDoItemsReducer'
 import {fetchItemsAPI, addItemsAPI, updateItemsAPI, deleteItemsAPI} from "../services/todoService"
 import AddItemForm from "../components/AddItemForm";
@@ -12,7 +12,7 @@ function ToDoListPage() {
 
     //STATES FOR AUTHENTICATION
     const navigate = useNavigate();
-    const {token, logout} = useAuth();
+    const {token, userId, logout} = useAuth();
 
     // GLOBAL ITEMS STATE from REDUCER
     const [itemsState, dispatchItems] = useReducer(toDoItemsReducer, initialState);
@@ -50,7 +50,7 @@ function ToDoListPage() {
         console.log(token);
 
         try {
-            const fetchedItems = await fetchItemsAPI(token);
+            const fetchedItems = await fetchItemsAPI(userId,token);
             dispatchItems({
                 type: 'ITEMS_FETCH_SUCCESS',
                 payload: fetchedItems,
@@ -72,6 +72,7 @@ function ToDoListPage() {
 
         try {
             await addItemsAPI({
+                userId: userId,
                 text: newItemText,
                 date: newDateText,
                 completed: false,
@@ -136,7 +137,7 @@ function ToDoListPage() {
             setEditingText('');
             setEditingId(null);
             await handleFetchItems();
-        } catch (error){
+        } catch (error) {
             handleApiError(error, 'ITEMS_UPDATE_FAILURE');
         }
     }, [editingText, editingDate, handleFetchItems, token, handleApiError]);
@@ -150,7 +151,7 @@ function ToDoListPage() {
         try {
             await deleteItemsAPI(item.id, token);
             await handleFetchItems();
-        } catch (error){
+        } catch (error) {
             handleApiError(error, 'ITEMS_DELETE_FAILURE');
         }
     }, [handleFetchItems, token, handleApiError]);
@@ -158,7 +159,7 @@ function ToDoListPage() {
 
     //INITIAL FETCH WHEN COMPONEN MOUNTS
     useEffect(() => {
-        if (token){
+        if (token) {
             handleFetchItems();
         } else {
             console.log("ToDoListPage: No token found on mount, redirecting to login.")
@@ -206,8 +207,8 @@ function ToDoListPage() {
     //     handleFetchItems();
     // }, [handleFetchItems])
 
-    if (!token && !!itemsState.isLoading &&itemsState.authError) {
-        return <p>Redirecting to login...   </p>
+    if (!token && !!itemsState.isLoading && itemsState.authError) {
+        return <p>Redirecting to login... </p>
     }
 
     return (
