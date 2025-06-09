@@ -1,5 +1,6 @@
 import React from "react";
 import Item from "./Item.jsx";
+import '../styles/List.css'
 
 const List = ({
                   onCompleteItem,
@@ -14,7 +15,7 @@ const List = ({
                   onSaveItem
               }) => {
 
-    return <ul>
+    return <ul className={"list-component"}>
         {
             sortedList.map((item) => (<Item key={item.id}
                                             item={item}

@@ -8,7 +8,7 @@ export function useAuth() {
 
 export function AuthProvider({children}) {
     const [token, setToken] = useState(localStorage.getItem('jwtToken'));
-    const [userId, setUserId] = useState(0);
+    const [userId, setUserId] = useState(localStorage.getItem('userId'));
     const isAuthenticated = useMemo(() => !!token, [token]);
 
     useEffect(() => {
@@ -18,6 +18,14 @@ export function AuthProvider({children}) {
             localStorage.removeItem('jwtToken');
         }
     }, [token]);
+
+    useEffect(() => {
+        if (userId) {
+            localStorage.setItem('userId', userId);
+        } else {
+            localStorage.removeItem('userId');
+        }
+    }, [userId]);
 
     const login = async (username, password) => {
         try {

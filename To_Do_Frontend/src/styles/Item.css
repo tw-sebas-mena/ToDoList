@@ -1,0 +1,75 @@
+.item-component {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+
+.item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.item-text-display,
+.item-date-display {
+    padding: 4px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.item-date-display {
+    color: #888;
+    font-size: 14px;
+}
+
+.item-input {
+    font-size: 14px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.item-date-input {
+    max-width: 160px;
+    font-size: 12px;
+}
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-left: 16px;
+    min-width: 140px;
+    justify-content: flex-start;
+}
+
+.item-btn {
+    padding: 6px 10px;
+    background-color: #4433b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.item-btn:hover {
+    background-color: #3729a3;
+}
