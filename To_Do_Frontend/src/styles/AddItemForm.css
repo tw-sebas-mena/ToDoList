@@ -1,0 +1,40 @@
+.add-item-content {
+    display: flex;
+    gap: 10px;
+    font-size: 18px;
+    padding: 10px 0;
+}
+
+.add-item-input-label {
+    font-size: 18px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    outline: none;
+}
+
+.add-item-input {
+    font-size: 14px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    width: 40%;
+    max-width: 40%;
+    box-sizing: border-box;
+}
+
+.add-item-button {
+    width: 150px;
+    margin-left: 10px;
+    padding: 6px 15px;
+    background-color: #4433b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+.add-item-button:hover {
+    background-color: #3729a3;
+}

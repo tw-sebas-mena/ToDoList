@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class AuthUserService {
 
@@ -62,6 +64,11 @@ public class AuthUserService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         return jwtService.generateToken(userDetails);
+    }
+
+    public int getIdByUsername(String username) {
+        Optional<AppUser> appUser =  userRepository.findByUsername(username);
+        return Math.toIntExact(appUser.get().getId());
     }
 
 //    public AppUser loginUser(LoginRequest loginRequest) {

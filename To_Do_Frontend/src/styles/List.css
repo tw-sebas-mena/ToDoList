@@ -1,0 +1,9 @@
+.list-component {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+    max-height: 400px; /* Enough for 6 items of ~60px height */
+    box-sizing: border-box;
+}

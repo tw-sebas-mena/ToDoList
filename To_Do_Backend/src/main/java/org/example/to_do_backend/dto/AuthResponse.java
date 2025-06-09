@@ -7,6 +7,7 @@ public class AuthResponse {
 
     private String message;
     private String accessToken;
+    private int loggedInUserId;
 
     public AuthResponse(String message) {
         this.message = message;
@@ -15,5 +16,11 @@ public class AuthResponse {
     public AuthResponse(String message, String accessToken) {
         this.message = message;
         this.accessToken = accessToken;
+    }
+
+    public AuthResponse(String message, String accessToken, int loggedInUserId) {
+        this.message = message;
+        this.accessToken = accessToken;
+        this.loggedInUserId = loggedInUserId;
     }
 }

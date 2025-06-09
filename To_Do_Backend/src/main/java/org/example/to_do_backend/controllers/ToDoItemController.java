@@ -20,9 +20,11 @@ public class ToDoItemController {
         toDoItemService.create(toDoItem);
     }
 
-    @GetMapping("/todo")
-    public Iterable<ToDoItem> getAll() {
-        return toDoItemService.findAll();
+    @GetMapping("/todo/{id}")
+    public Iterable<ToDoItem> getAll(
+            @PathVariable int id
+    ) {
+        return toDoItemService.findAllByUserId(id);
     }
 
     @PutMapping("/todo/{id}")

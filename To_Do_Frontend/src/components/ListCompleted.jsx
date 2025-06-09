@@ -1,12 +1,13 @@
 import React from "react";
 import ItemCompleted from "./ItemCompleted";
+import '../styles/List.css'
 
 const ListCompleted = ({
                            list,
                            onUnfinishItem,
                            onDeleteItem,
                        }) => (
-    <ul>
+    <ul className={"list-component"}>
         {list.map((item) => (
             <ItemCompleted
                 key={item.id}

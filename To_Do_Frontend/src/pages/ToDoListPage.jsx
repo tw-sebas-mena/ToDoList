@@ -1,4 +1,4 @@
-import React, {useReducer, useState, useCallback, useEffect, useMemo} from 'react'
+import React, {useReducer, useCallback, useEffect, useMemo} from 'react'
 import {toDoItemsReducer, initialState} from '../reducers/toDoItemsReducer'
 import {fetchItemsAPI, addItemsAPI, updateItemsAPI, deleteItemsAPI} from "../services/todoService"
 import AddItemForm from "../components/AddItemForm";
@@ -6,13 +6,13 @@ import List from "../components/List";
 import ListCompleted from "../components/ListCompleted";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthProvider";
-
+import '../styles/ToDoListPage.css'
 
 function ToDoListPage() {
 
     //STATES FOR AUTHENTICATION
     const navigate = useNavigate();
-    const {token, logout} = useAuth();
+    const {token, userId, logout} = useAuth();
 
     // GLOBAL ITEMS STATE from REDUCER
     const [itemsState, dispatchItems] = useReducer(toDoItemsReducer, initialState);
@@ -50,7 +50,7 @@ function ToDoListPage() {
         console.log(token);
 
         try {
-            const fetchedItems = await fetchItemsAPI(token);
+            const fetchedItems = await fetchItemsAPI(userId, token);
             dispatchItems({
                 type: 'ITEMS_FETCH_SUCCESS',
                 payload: fetchedItems,
@@ -72,6 +72,7 @@ function ToDoListPage() {
 
         try {
             await addItemsAPI({
+                userId: userId,
                 text: newItemText,
                 date: newDateText,
                 completed: false,
@@ -136,7 +137,7 @@ function ToDoListPage() {
             setEditingText('');
             setEditingId(null);
             await handleFetchItems();
-        } catch (error){
+        } catch (error) {
             handleApiError(error, 'ITEMS_UPDATE_FAILURE');
         }
     }, [editingText, editingDate, handleFetchItems, token, handleApiError]);
@@ -150,7 +151,7 @@ function ToDoListPage() {
         try {
             await deleteItemsAPI(item.id, token);
             await handleFetchItems();
-        } catch (error){
+        } catch (error) {
             handleApiError(error, 'ITEMS_DELETE_FAILURE');
         }
     }, [handleFetchItems, token, handleApiError]);
@@ -158,7 +159,7 @@ function ToDoListPage() {
 
     //INITIAL FETCH WHEN COMPONEN MOUNTS
     useEffect(() => {
-        if (token){
+        if (token) {
             handleFetchItems();
         } else {
             console.log("ToDoListPage: No token found on mount, redirecting to login.")
@@ -206,8 +207,8 @@ function ToDoListPage() {
     //     handleFetchItems();
     // }, [handleFetchItems])
 
-    if (!token && !!itemsState.isLoading &&itemsState.authError) {
-        return <p>Redirecting to login...   </p>
+    if (!token && !!itemsState.isLoading && itemsState.authError) {
+        return <p>Redirecting to login... </p>
     }
 
     return (
@@ -224,42 +225,57 @@ function ToDoListPage() {
             {itemsState.isLoading && <p>Loading tasks...</p>}
             {itemsState.isError && <p style={{color: 'red'}}>Error fetching tasks. Please try again.</p>}
 
-            <div>
-                <h2> Unfinished tasks </h2>
+            <div className={"list-buttons-container"}>
                 {itemsState.itemsData.length > 0 && (
                     <>
-                        <button type={'button'} onClick={() => setSortingOrder('asc')}
-                                disabled={sortingOrder === 'asc'}>
+                        <button type={'button'}
+                                onClick={() => setSortingOrder('asc')}
+                                disabled={sortingOrder === 'asc'}
+                                className={sortingOrder === 'desc' ? (
+                                    "list-buttons"
+                                ) : (
+                                    "list-buttons-disabled"
+                                )}>
                             Sort by Date (Oldest First)
                         </button>
-                        <button type={'button'} onClick={() => setSortingOrder('desc')}
-                                disabled={sortingOrder === 'desc'}>
+                        <button type={'button'}
+                                onClick={() => setSortingOrder('desc')}
+                                disabled={sortingOrder === 'desc'}
+                                className={sortingOrder === 'asc' ? (
+                                    "list-buttons"
+                                ) : (
+                                    "list-buttons-disabled"
+                                )}>
                             Sort by Date (Newest First)
                         </button>
                     </>
                 )}
-                <List
-                    onCompleteItem={handleCompleteItem}
-                    onEditItem={handleEditItem}
-                    editingId={editingId}
-                    editingText={editingText}
-                    sortingOrder={sortingOrder}
-                    onEditTextInput={onEditTextInput}
-                    sortedList={sortedList}
-                    onSaveItem={handleSaveItem}
-                    editingDate={editingDate}
-                    onEditDateInput={onEditDateInput}
-                    onCancelEditItem={handleCancelEditItem}
-                />
             </div>
-
-            <div>
-                <h2>Completed tasks</h2>
-                <ListCompleted
-                    list={itemsState.itemsCompletedData}
-                    onUnfinishItem={handleUnfinishedItem}
-                    onDeleteItem={handleDeleteItem}
-                />
+            <div style={{display: 'flex', gap: '20px'}}>
+                <div className={"list-container"}>
+                    <h2> Unfinished tasks </h2>
+                    <List
+                        onCompleteItem={handleCompleteItem}
+                        onEditItem={handleEditItem}
+                        editingId={editingId}
+                        editingText={editingText}
+                        sortingOrder={sortingOrder}
+                        onEditTextInput={onEditTextInput}
+                        sortedList={sortedList}
+                        onSaveItem={handleSaveItem}
+                        editingDate={editingDate}
+                        onEditDateInput={onEditDateInput}
+                        onCancelEditItem={handleCancelEditItem}
+                    />
+                </div>
+                <div className={"list-container"}>
+                    <h2>Completed tasks</h2>
+                    <ListCompleted
+                        list={itemsState.itemsCompletedData}
+                        onUnfinishItem={handleUnfinishedItem}
+                        onDeleteItem={handleDeleteItem}
+                    />
+                </div>
             </div>
         </div>
     );

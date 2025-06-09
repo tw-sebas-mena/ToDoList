@@ -51,10 +51,11 @@ public class AuthUserController {
     ) {
         try {
             String token = authUserService.loginUserAndGenerateToken(loginRequest);
+            int userId = authUserService.getIdByUsername(loginRequest.getUsername());
 
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new AuthResponse("User logged in successfully!", token));
+                    .body(new AuthResponse("User logged in successfully!", token, userId));
         } catch (AuthenticationException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)

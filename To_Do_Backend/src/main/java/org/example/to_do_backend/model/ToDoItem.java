@@ -13,6 +13,9 @@ import java.time.LocalDate;
 public class ToDoItem {
     @Id
     private int id;
+
+    private int userId;
+
     private String text;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
