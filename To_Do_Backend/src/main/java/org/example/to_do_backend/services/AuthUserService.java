@@ -3,10 +3,9 @@ package org.example.to_do_backend.services;
 import org.example.to_do_backend.auth.JwtService;
 import org.example.to_do_backend.dto.LoginRequest;
 import org.example.to_do_backend.dto.RegisterRequest;
-import org.example.to_do_backend.model.AppUser;
+import org.example.to_do_backend.entities.AppUser;
 import org.example.to_do_backend.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,17 +70,6 @@ public class AuthUserService {
         return Math.toIntExact(appUser.get().getId());
     }
 
-//    public AppUser loginUser(LoginRequest loginRequest) {
-//        AppUser appUser = userRepository.findByUsername(loginRequest.getUsername())
-//                .orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
-//        if (!passwordEncoder.matches(loginRequest.getPassword(), appUser.getPassword())) {
-//            throw new BadCredentialsException("Invalid username or password");
-//        }
-//
-//        appUser.setPassword(null);
-//        return appUser;
-//
-//    }
 
 
 }

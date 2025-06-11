@@ -6,7 +6,7 @@ import List from "../components/List";
 import ListCompleted from "../components/ListCompleted";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthProvider";
-import '../styles/ToDoListPage.css'
+import '../styles/pages/ToDoListPage.css'
 
 function ToDoListPage() {
 

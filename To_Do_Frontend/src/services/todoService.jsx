@@ -31,7 +31,7 @@ const handleError = (error) => {
 export const fetchItemsAPI = async (itemId, token) => {
     try {
         const apiClient = getApiClient(token);
-        const result = await apiClient.get(`/${itemId}`);
+        const result = await apiClient.get(`/user/${itemId}`);
         return result.data;
     } catch (error) {
         handleError(error)

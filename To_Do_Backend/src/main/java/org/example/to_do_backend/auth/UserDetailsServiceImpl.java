@@ -1,6 +1,6 @@
 package org.example.to_do_backend.auth;
 
-import org.example.to_do_backend.model.AppUser;
+import org.example.to_do_backend.entities.AppUser;
 import org.springframework.security.core.userdetails.User;
 import org.example.to_do_backend.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

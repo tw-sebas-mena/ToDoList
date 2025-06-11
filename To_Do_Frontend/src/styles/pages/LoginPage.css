@@ -1,0 +1,47 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-line {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.form-label {
+    font-size: 18px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    outline: none;
+    width: 150px;
+}
+
+.form-input {
+    font-size: 14px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    width: 250px;
+    box-sizing: border-box;
+}
+
+.form-button {
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 6px 20px;
+    background-color: #4433b8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    width: 200px;
+}
+
+.register-label {
+    font-size: 18px;
+    margin-left: 20px;
+}

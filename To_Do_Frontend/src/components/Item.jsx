@@ -1,6 +1,6 @@
 import {format, parseISO} from "date-fns";
 import React from "react";
-import '../styles/Item.css';
+import '../styles/components/Item.css';
 
 const Item = ({
                   item,
