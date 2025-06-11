@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthProvider.jsx";
+import '../styles/pages/LoginPage.css';
 
 function LoginPage() {
 
@@ -25,48 +26,49 @@ function LoginPage() {
         }
     };
 
-    return (<div>
-        <h1> Login to view the items </h1>
-        <form onSubmit={handleLogin}>
-            <div>
+    return (
+        <div>
+            <h1> Login to view the items </h1>
+            <form onSubmit={handleLogin} className="login-form">
+                <div className={"form-line"}>
+                    <label htmlFor="username" className={"form-label"}>
+                        Username:
+                    </label>
+                    <input
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required={true}
+                        className="form-input"
+                    />
+                </div>
+                <div className={"form-line"}>
+                    <label htmlFor="password" className={"form-label"}>
+                        Password:
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required={true}
+                        className={"form-input"}
+                    />
+                </div>
 
-                <label htmlFor="username">
-                    Username:
-                </label>
-                <input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required={true}
-                />
-            </div>
-            <div>
-                <label htmlFor="password">
-                    Password
-                </label>
-                <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required={true}
-                />
+                {error && <p style={{color: 'red'}}>{error}</p>}
 
-            </div>
+                <button className={"form-button"} type={"submit"}> Login</button>
 
-            {error && <p style={{color: 'red'}}>{error}</p>}
+            </form>
 
-            <button type={"submit"}> Login</button>
+            <p className={"register-label"}>
+                Don't have an account?
+                <Link to={"/register"}> Register here!</Link>
+            </p>
 
-        </form>
-
-        <p>
-            Don't have an account?
-            <Link to={"/register"}>Register here!</Link>
-        </p>
-
-    </div>);
+        </div>);
 
 }
 

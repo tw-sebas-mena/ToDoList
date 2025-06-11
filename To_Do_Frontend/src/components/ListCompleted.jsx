@@ -1,6 +1,6 @@
 import React from "react";
 import ItemCompleted from "./ItemCompleted";
-import '../styles/List.css'
+import '../styles/components/List.css'
 
 const ListCompleted = ({
                            list,

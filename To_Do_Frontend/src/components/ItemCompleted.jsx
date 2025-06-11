@@ -1,6 +1,6 @@
 import React from "react";
 import {parseISO, format} from "date-fns";
-import '../styles/Item.css';
+import '../styles/components/Item.css';
 
 const ItemCompleted = ({
                            item,

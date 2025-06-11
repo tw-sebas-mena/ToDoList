@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/AddItemForm.css'
+import '../styles/components/AddItemForm.css'
 
 const AddItemForm = ({
                          addAction,

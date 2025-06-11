@@ -1,6 +1,6 @@
 import React from "react";
 import Item from "./Item.jsx";
-import '../styles/List.css'
+import '../styles/components/List.css'
 
 const List = ({
                   onCompleteItem,
