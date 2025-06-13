@@ -38,6 +38,17 @@ export const fetchItemsAPI = async (itemId, token) => {
     }
 };
 
+
+export const fetchTagsAPI = async (token) => {
+    try {
+        const apiClient = getApiClient(token);
+        const result = await apiClient.get(`/tags`);
+        return result.data;
+    } catch (error) {
+        handleError(error)
+    }
+}
+
 export const addItemsAPI = async (itemData, token) => {
     try {
         const apiClient = getApiClient(token);

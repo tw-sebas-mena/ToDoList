@@ -12,6 +12,6 @@ public class ItemUpdateRequest {
     private String text;
     private Long userId;
     private LocalDate date;
-    private Set<String> tags;
+    private Set<TagDTO> tags;
     private boolean isCompleted;
 }

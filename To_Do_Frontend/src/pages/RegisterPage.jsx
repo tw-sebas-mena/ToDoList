@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthProvider.jsx";
+import '../styles/pages/RegisterPage.css';
 
 function RegisterPage() {
 
@@ -38,9 +39,9 @@ function RegisterPage() {
     return (
         <div>
             <h1> Register </h1>
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label htmlFor="username">
+            <form onSubmit={handleRegister} className={"login-form"}>
+                <div className={"form-line"}>
+                    <label htmlFor="username" className={"form-label"}>
                         Username:
                     </label>
                     <input
@@ -49,11 +50,12 @@ function RegisterPage() {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required={true}
+                        className={"form-input"}
                     />
 
                 </div>
-                <div>
-                    <label htmlFor="password">
+                <div className={"form-line"}>
+                    <label htmlFor="password" className={"form-label"}>
                         Password
                     </label>
                     <input
@@ -62,11 +64,12 @@ function RegisterPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required={true}
+                        className={"form-input"}
                     />
                 </div>
 
-                <div>
-                    <label htmlFor="confirmPassword">
+                <div className={"form-line"}>
+                    <label htmlFor="confirmPassword" className={"form-label"}>
                         Confirm Password
                     </label>
                     <input
@@ -75,18 +78,19 @@ function RegisterPage() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required={true}
+                        className={"form-input"}
                     />
                 </div>
                 {error && <p style={{color: 'red'}}>{error}</p>}
                 {message && <p style={{color: 'green'}}>{message}</p>}
 
-                <button type={"submit"}>Register</button>
+                <button type={"submit"} className={"form-button"}>Register</button>
 
             </form>
 
-            <p>
+            <p className={"register-label"}>
                 Already have an account?
-                <Link to={"/login"}>Login
+                <Link to={"/login"}>
                     Login here!
                 </Link>
             </p>

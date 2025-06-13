@@ -6,8 +6,8 @@ import org.example.to_do_backend.entities.Tag;
 import org.example.to_do_backend.entities.Item;
 
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ public class ItemResponse {
     private String text;
     private boolean completed;
     private LocalDate date;
-    private Set<String> tags;
+    private List<TagDTO> tags = new ArrayList<>();
 
     public static ItemResponse fromEntity(Item item) {
         ItemResponse dto = new ItemResponse();
@@ -24,10 +24,12 @@ public class ItemResponse {
         dto.setText(item.getText());
         dto.setCompleted(item.isCompleted());
         dto.setDate(item.getDate());
-        dto.setTags(item.getTags()
-                .stream()
-                .map(Tag::getName)
-                .collect(Collectors.toSet()));
+        for (Tag tag : item.getTags()) {
+            TagDTO tagDTO = new TagDTO();
+            tagDTO.setTagName(tag.getName());
+            tagDTO.setColorCode(tag.getColor());
+            dto.tags.add(tagDTO);
+        }
         return dto;
     }
 }

@@ -12,7 +12,10 @@ const List = ({
                   onEditTextInput,
                   onEditDateInput,
                   onCancelEditItem,
-                  onSaveItem
+                  onSaveItem,
+                  onTagSelection,
+                  editingTags,
+                  tags
               }) => {
 
     return <ul className={"list-component"}>
@@ -28,6 +31,9 @@ const List = ({
                                             editingDate={editingDate}
                                             onEditDateInput={onEditDateInput}
                                             onCancelEditItem={onCancelEditItem}
+                                            onTagSelection={onTagSelection}
+                                            selectedTags={editingTags}
+                                            tags={tags}
                 />
             ))}
     </ul>
