@@ -19,13 +19,17 @@ public class Tag {
     @Column(nullable = false, unique = true)
     private String name;
 
-//    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private Set<Item> items;
+    @Column
+    private String color;
 
     public Tag() {}
 
     public Tag(String name) {
         this.name = name;
+    }
+
+    public Tag(String name, String color) {
+        this.name = name;
+        this.color = color;
     }
 }

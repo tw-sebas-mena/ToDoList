@@ -3,7 +3,8 @@ export const initialState = {
     itemsCompletedData: [],
     isLoading: false,
     isError: false,
-    authError: null
+    authError: null,
+    tags: []
 };
 
 export const toDoItemsReducer = (state, action) => {
@@ -39,6 +40,13 @@ export const toDoItemsReducer = (state, action) => {
                 ...state,
                 isError: true,
                 isLoading: false,
+            }
+        case 'TAGS_FETCH_SUCCESS':
+            return {
+                ...state,
+                tags: action.payload,
+                isLoading: false,
+                isError: false,
             }
         case 'ITEMS_AUTH_ERROR':
             return {

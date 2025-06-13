@@ -1,6 +1,6 @@
 import React, {useReducer, useCallback, useEffect, useMemo} from 'react'
 import {toDoItemsReducer, initialState} from '../reducers/toDoItemsReducer'
-import {fetchItemsAPI, addItemsAPI, updateItemsAPI, deleteItemsAPI} from "../services/todoService"
+import {fetchItemsAPI, addItemsAPI, updateItemsAPI, deleteItemsAPI, fetchTagsAPI} from "../services/todoService"
 import AddItemForm from "../components/AddItemForm";
 import List from "../components/List";
 import ListCompleted from "../components/ListCompleted";
@@ -20,14 +20,17 @@ function ToDoListPage() {
     // STATES FOR ADDING ITEMS
     const [newItemText, setNewItemText] = React.useState('');
     const [newDateText, setNewDateText] = React.useState('');
+    const [selectedTags, setSelectedTags] = React.useState([]);
 
     // STATES FOR EDITING ITEMS
     const [editingId, setEditingId] = React.useState(null);
     const [editingText, setEditingText] = React.useState('');
     const [editingDate, setEditingDate] = React.useState('');
+    const [editingTags, setEditingTags] = React.useState([]);
 
     // STATES FOR SORTING ITEMS
     const [sortingOrder, setSortingOrder] = React.useState("desc");
+
 
     const handleApiError = useCallback((error, actionType = 'ITEMS_FETCH_FAILURE') => {
         console.error(`{$actionType} error:`, error);
@@ -58,7 +61,25 @@ function ToDoListPage() {
         } catch (error) {
             handleApiError(error, 'ITEMS_FETCH_FAILURE');
         }
-    }, [token, handleApiError]);
+    }, [token, handleApiError, userId]);
+
+    const handleFetchTags = useCallback(async () => {
+        if (!token) {
+            handleApiError(new Error("Token not found"), 'ITEMS_AUTH_ERROR');
+            return;
+        }
+
+        try {
+            const fetchedTags = await fetchTagsAPI(token);
+            dispatchItems({
+                type: 'TAGS_FETCH_SUCCESS',
+                payload: fetchedTags,
+            })
+        } catch (error) {
+            handleApiError(error, 'ITEMS_FETCH_FAILURE');
+        }
+    }, [handleApiError, token])
+
 
     const handleAddItems = useCallback(async (event) => {
         event.preventDefault();
@@ -75,15 +96,17 @@ function ToDoListPage() {
                 userId: userId,
                 text: newItemText,
                 date: newDateText,
+                tags: selectedTags,
                 completed: false,
             }, token);
             setNewItemText('');
             setNewDateText('');
+            setSelectedTags([])
             await handleFetchItems();
         } catch (error) {
             handleApiError(error, 'ITEMS_ADD_FAILURE');
         }
-    }, [newItemText, newDateText, handleFetchItems, token, handleApiError]);
+    }, [newItemText, newDateText, token, handleApiError, userId, selectedTags, handleFetchItems]);
 
     const handleCompleteItem = useCallback(async (item) => {
         if (!token) {
@@ -132,15 +155,17 @@ function ToDoListPage() {
                 ...item,
                 text: editingText,
                 date: editingDate,
+                tags: editingTags,
             }, token);
             setEditingDate('')
             setEditingText('');
             setEditingId(null);
+            setEditingTags([]);
             await handleFetchItems();
         } catch (error) {
             handleApiError(error, 'ITEMS_UPDATE_FAILURE');
         }
-    }, [editingText, editingDate, handleFetchItems, token, handleApiError]);
+    }, [editingText, editingDate, token, handleApiError, editingTags, handleFetchItems]);
 
     const handleDeleteItem = useCallback(async (item) => {
         if (!token) { // 1. Check for token
@@ -156,17 +181,24 @@ function ToDoListPage() {
         }
     }, [handleFetchItems, token, handleApiError]);
 
+    // TAGS LOGIC
+    const handleTagChange = useCallback((selectedTagNames) => {
+        const newSelectedTags = itemsState.tags.filter(tag => selectedTagNames.includes(tag.tagName));
+        setSelectedTags(newSelectedTags);
+    }, [itemsState.tags]);
 
-    //INITIAL FETCH WHEN COMPONEN MOUNTS
+
+        //INITIAL FETCH WHEN COMPONEN MOUNTS
     useEffect(() => {
         if (token) {
             handleFetchItems();
+            handleFetchTags();
         } else {
             console.log("ToDoListPage: No token found on mount, redirecting to login.")
             logout();
             navigate('/login');
         }
-    }, [token, handleFetchItems, logout, navigate]);
+    }, [token, handleFetchItems, logout, navigate, handleFetchTags]);
 
 
     //INPUT HANDLERS FOR AddItemForm
@@ -178,6 +210,7 @@ function ToDoListPage() {
         setEditingId(item.id);
         setEditingDate(item.date);
         setEditingText(item.text);
+        setEditingTags(item.tags);
     };
 
     // CANCEL EDIT
@@ -185,11 +218,17 @@ function ToDoListPage() {
         setEditingId(null);
         setEditingDate('');
         setEditingText('')
+        setEditingTags([])
     };
 
     // INPUT HANDLERS FOR Item while editing
     const onEditTextInput = (event) => setEditingText(event.target.value);
     const onEditDateInput = (event) => setEditingDate(event.target.value);
+    const onEditTag = useCallback((selectedTagNames) => {
+        const newSelectedTags = itemsState.tags.filter(tag => selectedTagNames.includes(tag.tagName));
+        setEditingTags(newSelectedTags);
+    }, [itemsState.tags]);
+
 
     // SORTING LOGIC
     const sortedList = useMemo(() => {
@@ -220,6 +259,9 @@ function ToDoListPage() {
                          onAddInput={handleAddItemInput}
                          onDateInput={handleAddItemDateInput}
                          dateText={newDateText}
+                         tags={itemsState.tags}
+                         onTagSelection={handleTagChange}
+                         selectedTags = {selectedTags}
             />
 
             {itemsState.isLoading && <p>Loading tasks...</p>}
@@ -259,6 +301,7 @@ function ToDoListPage() {
                         onEditItem={handleEditItem}
                         editingId={editingId}
                         editingText={editingText}
+                        editingTags={editingTags}
                         sortingOrder={sortingOrder}
                         onEditTextInput={onEditTextInput}
                         sortedList={sortedList}
@@ -266,6 +309,9 @@ function ToDoListPage() {
                         editingDate={editingDate}
                         onEditDateInput={onEditDateInput}
                         onCancelEditItem={handleCancelEditItem}
+                        tags={itemsState.tags}
+                        onTagSelection={onEditTag}
+
                     />
                 </div>
                 <div className={"list-container"}>

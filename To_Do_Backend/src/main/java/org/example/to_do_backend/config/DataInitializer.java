@@ -29,9 +29,9 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args)  {
         if (tagRepository.count() == 0) {
-            Tag work = new Tag("Work");
-            Tag home = new Tag("Home");
-            Tag fitness = new Tag("Fitness");
+            Tag work = new Tag("Work", "#a1423b");
+            Tag home = new Tag("Home", "#7aa0cf");
+            Tag fitness = new Tag("Fitness", "#ba6cac");
 
             tagRepository.saveAll(List.of(work, home, fitness));
 
